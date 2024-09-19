@@ -1,14 +1,16 @@
 using LISMinimalApi;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Register services for DI
+builder.Services.AddSingleton<InputParser>();
+builder.Services.AddSingleton<LISFinder>();
+
 var app = builder.Build();
 
 
-app.MapPost("/calculate-lis", (string input) =>
+app.MapPost("/calculate-lis", (string input, InputParser parser, LISFinder finder) =>
 {
-    var parser = new InputParser();
-    var finder = new LISFinder();
-   
     try
     {
         var sequence = parser.Parse(input);
