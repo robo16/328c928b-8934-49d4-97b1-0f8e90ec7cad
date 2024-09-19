@@ -25,4 +25,8 @@
       <ProjectReference Include="..\LISMinimalApi\LISMinimalApi.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="UnitTest1.cs" />
+    </ItemGroup>
+
 </Project>
