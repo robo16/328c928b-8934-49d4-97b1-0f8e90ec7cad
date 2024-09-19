@@ -9,7 +9,22 @@ builder.Services.AddSingleton<LISFinder>();
 // Add logging services
 builder.Services.AddLogging();
 
+// Add services for Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
+
+// Enable middleware for Swagger UI and OpenAPI documentation
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "LIS API V1");
+        c.RoutePrefix = string.Empty;  // Set Swagger UI at the app's root
+    });
+}
 
 // Global exception handling middleware
 app.Use(async (context, next) =>
