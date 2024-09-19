@@ -1,25 +1,24 @@
+using LISMinimalApi;
+
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+
+app.MapPost("/calculate-lis", (string input) =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
+    var parser = new InputParser();
+    var finder = new LISFinder();
+   
+    try
+    {
+        var sequence = parser.Parse(input);
+        var lis = string.Join(" ", finder.FindLongestIncreasingSubsequence(sequence));
+        return Results.Ok(lis);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+});
 
 app.Run();
